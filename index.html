@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" style="color-scheme: dark;"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daniel Kinyanjui Mbagara — Cybersecurity Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  /* ===== Tokens ===== */
+  :root{
+    --bg:#F2F4F6;
+    --panel:#FFFFFF;
+    --panel-2:#F7F9FA;
+    --text:#171B21;
+    --text-dim:#5A6472;
+    --accent:#0E7C74;
+    --accent-ink:#FFFFFF;
+    --accent2:#B5730A;
+    --border:#DBE1E7;
+    --mono-bg:#EBEEF1;
+    --danger:#B3382C;
+    --radius:3px;
+    --font-display:'Space Grotesk', 'Segoe UI', Arial, sans-serif;
+    --font-body:'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
+    --font-mono:'IBM Plex Mono', 'Courier New', monospace;
+    --shadow-modal: 0 20px 60px rgba(10,14,18,0.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12161C;
+      --panel:#1A2129;
+      --panel-2:#171D24;
+      --text:#E8ECEF;
+      --text-dim:#93A0AC;
+      --accent:#5FD4C4;
+      --accent-ink:#0B1613;
+      --accent2:#E8A33D;
+      --border:#2A323C;
+      --mono-bg:#0E1318;
+      --danger:#E27C6D;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12161C;
+    --panel:#1A2129;
+    --panel-2:#171D24;
+    --text:#E8ECEF;
+    --text-dim:#93A0AC;
+    --accent:#5FD4C4;
+    --accent-ink:#0B1613;
+    --accent2:#E8A33D;
+    --border:#2A323C;
+    --mono-bg:#0E1318;
+    --danger:#E27C6D;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);}
+  h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;margin:0 0 .4em;letter-spacing:-0.01em;}
+  p{margin:0 0 1em;color:var(--text);}
+  .dim{color:var(--text-dim);}
+  .mono{font-family:var(--font-mono);}
+  button{font-family:var(--font-body);cursor:pointer;}
+  input,textarea,select{font-family:var(--font-body);}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important;transition-duration:0.001ms !important;}
+  }
+
+  /* ===== Shell layout ===== */
+  #app{display:flex;min-height:100vh;}
+  .sidebar{
+    width:230px;flex:0 0 230px;
+    border-right:1px solid var(--border);
+    padding:28px 20px;
+    display:flex;flex-direction:column;
+    position:sticky;top:0;height:100vh;
+  }
+  .brand{font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin-bottom:2px;}
+  .brand-sub{font-size:0.78rem;color:var(--text-dim);margin-bottom:28px;font-family:var(--font-mono);}
+  nav.primary{display:flex;flex-direction:column;gap:2px;}
+  nav.primary button{
+    background:none;border:none;text-align:left;padding:9px 10px;
+    color:var(--text-dim);font-size:0.92rem;border-radius:var(--radius);
+    display:flex;align-items:center;gap:10px;
+  }
+  nav.primary button .dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex:0 0 auto;}
+  nav.primary button.active{color:var(--text);background:var(--panel-2);}
+  nav.primary button.active .dot{background:var(--accent);}
+  nav.primary button:hover{color:var(--text);}
+  .sidebar-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px;}
+  .status-chip{
+    font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);
+    border:1px solid var(--border);border-radius:var(--radius);
+    padding:6px 8px;display:flex;align-items:center;gap:7px;
+  }
+  .status-chip .pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:0 0 auto;}
+  .edit-toggle{
+    border:1px solid var(--border);background:var(--panel);color:var(--text-dim);
+    padding:7px 10px;border-radius:var(--radius);font-size:0.78rem;font-family:var(--font-mono);
+  }
+  .edit-toggle.on{border-color:var(--accent);color:var(--accent);}
+
+  .topbar{display:none;}
+
+  main{flex:1;min-width:0;}
+  .view{max-width:760px;margin:0 auto;padding:56px 40px 100px;}
+  .view-header{margin-bottom:36px;}
+  .kicker{font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);margin-bottom:8px;}
+
+  /* ===== Home ===== */
+  .home-hero h1{font-size:2.3rem;line-height:1.15;margin-bottom:10px;}
+  .home-hero .role{font-family:var(--font-mono);color:var(--accent);font-size:1rem;margin-bottom:20px;}
+  .home-bio{max-width:58ch;font-size:1.02rem;}
+  .home-meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin:22px 0 30px;font-size:0.88rem;color:var(--text-dim);}
+  .home-meta span{display:flex;align-items:center;gap:6px;}
+  .link-row{display:flex;flex-wrap:wrap;gap:10px;}
+  .link-row a{
+    border:1px solid var(--border);border-radius:var(--radius);
+    padding:8px 14px;font-size:0.86rem;color:var(--text);text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .link-row a:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* ===== Home photo ===== */
+  .home-photo-row{display:flex;align-items:center;gap:20px;margin-bottom:18px;}
+  .home-photo{
+    width:88px;height:88px;border-radius:50%;object-fit:cover;
+    border:1px solid var(--border);flex:0 0 auto;background:var(--panel-2);
+  }
+  .home-photo-placeholder{
+    width:88px;height:88px;border-radius:50%;flex:0 0 auto;
+    border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);text-align:center;background:var(--panel-2);
+  }
+  .photo-field{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .photo-preview{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid var(--border);}
+  .photo-preview-placeholder{width:64px;height:64px;border-radius:50%;border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:var(--text-dim);font-family:var(--font-mono);text-align:center;}
+
+  /* ===== Lab challenges ===== */
+  .lab{
+    border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;
+    position:relative;background:var(--panel);
+  }
+  .lab-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;}
+  .lab-title{font-family:var(--font-display);font-weight:600;font-size:1.05rem;}
+  .lab-date{font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);}
+  .lab-field{margin-top:12px;}
+  .lab-field h5{font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;margin:0 0 4px;font-weight:500;}
+  .lab-field p{font-size:0.92rem;margin:0;}
+  .lab-shots{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  .lab-shots img{max-width:160px;max-height:110px;object-fit:cover;border:1px solid var(--border);border-radius:var(--radius);}
+  .lab-actions{position:absolute;right:16px;top:16px;display:none;gap:6px;}
+  .lab:hover .lab-actions{display:flex;}
+  .lab-foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:12px;}
+
+  /* ===== Contacts ===== */
+  .contact-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap;}
+  .contact-row:last-child{border-bottom:none;}
+  .contact-label{font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.04em;}
+  .contact-value{font-size:0.96rem;}
+  .contact-value a{text-decoration:none;}
+  .contact-value a:hover{text-decoration:underline;}
+
+  /* ===== Section shell ===== */
+  .section-block{margin-bottom:44px;}
+  .section-block h2{font-size:1.05rem;text-transform:none;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;}
+  .add-inline{
+    font-family:var(--font-mono);font-size:0.75rem;background:none;border:1px dashed var(--border);
+    color:var(--text-dim);padding:5px 10px;border-radius:var(--radius);
+  }
+  .add-inline:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* entries (experience/education) */
+  .entry{padding:16px 0;border-bottom:1px solid var(--border);position:relative;}
+  .entry:last-child{border-bottom:none;}
+  .entry-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .entry-title{font-weight:600;font-size:0.98rem;}
+  .entry-org{color:var(--accent);font-size:0.92rem;}
+  .entry-dates{font-family:var(--font-mono);font-size:0.78rem;color:var(--text-dim);white-space:nowrap;}
+  .entry ul{margin:8px 0 0 18px;padding:0;font-size:0.92rem;}
+  .entry li{margin-bottom:4px;}
+  .entry-actions{position:absolute;right:0;top:16px;display:none;gap:6px;}
+  .entry:hover .entry-actions{display:flex;}
+  .icon-btn{
+    border:1px solid var(--border);background:var(--panel);border-radius:var(--radius);
+    font-size:0.72rem;padding:3px 7px;color:var(--text-dim);font-family:var(--font-mono);
+  }
+  .icon-btn:hover{color:var(--text);}
+  .icon-btn.danger:hover{color:var(--danger);border-color:var(--danger);}
+
+  /* skills */
+  .skill-group{margin-bottom:16px;}
+  .skill-group h4{font-family:var(--font-mono);font-size:0.78rem;color:var(--text-dim);font-weight:500;margin-bottom:8px;text-transform:none;}
+  .tag-row{display:flex;flex-wrap:wrap;gap:7px;}
+  .tag{
+    font-family:var(--font-mono);font-size:0.78rem;background:var(--mono-bg);
+    border:1px solid var(--border);padding:4px 9px;border-radius:var(--radius);color:var(--text);
+  }
+
+  /* certifications */
+  .cert-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap;}
+  .cert-row:last-child{border-bottom:none;}
+  .cert-name{font-weight:500;font-size:0.92rem;}
+  .cert-meta{font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);}
+
+  /* projects */
+  .project{
+    border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;
+    position:relative;background:var(--panel);
+  }
+  .project-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;}
+  .project-title{font-family:var(--font-display);font-weight:600;font-size:1.05rem;}
+  .project-date{font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);}
+  .project-status{
+    font-family:var(--font-mono);font-size:0.7rem;padding:2px 8px;border-radius:var(--radius);
+    border:1px solid var(--accent2);color:var(--accent2);margin-left:8px;
+  }
+  .project-summary{margin:10px 0;font-size:0.94rem;}
+  .project-foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:8px;}
+  .project-link{font-size:0.86rem;font-family:var(--font-mono);}
+  .project-actions{position:absolute;right:16px;top:16px;display:none;gap:6px;}
+  .project:hover .project-actions{display:flex;}
+
+  /* blog */
+  .post-row{padding:16px 0;border-bottom:1px solid var(--border);position:relative;cursor:pointer;}
+  .post-row:last-child{border-bottom:none;}
+  .post-row:hover .post-title{color:var(--accent);}
+  .post-date{font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);margin-bottom:4px;}
+  .post-title{font-weight:600;font-size:1.02rem;}
+  .post-excerpt{font-size:0.9rem;color:var(--text-dim);margin-top:4px;}
+  .post-actions{position:absolute;right:0;top:16px;display:none;gap:6px;}
+  .post-row:hover .post-actions{display:flex;}
+  .post-full h1{font-size:1.7rem;margin-bottom:6px;}
+  .post-full .post-date{margin-bottom:20px;}
+  .post-full .body p{margin-bottom:1em;font-size:1rem;}
+  .back-link{background:none;border:none;color:var(--text-dim);font-family:var(--font-mono);font-size:0.82rem;padding:0;margin-bottom:22px;display:inline-flex;align-items:center;gap:6px;}
+  .back-link:hover{color:var(--accent);}
+
+  .empty-state{
+    border:1px dashed var(--border);border-radius:var(--radius);padding:26px;text-align:center;
+    color:var(--text-dim);font-size:0.9rem;
+  }
+
+  /* ===== Modal ===== */
+  .overlay{
+    position:fixed;inset:0;background:rgba(10,14,18,0.5);
+    display:flex;align-items:flex-start;justify-content:center;
+    padding:6vh 16px;z-index:100;overflow-y:auto;
+  }
+  .modal{
+    background:var(--panel);border:1px solid var(--border);border-radius:6px;
+    width:100%;max-width:520px;padding:26px 26px 22px;box-shadow:var(--shadow-modal);
+  }
+  .modal h3{font-size:1.1rem;margin-bottom:18px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:0.78rem;color:var(--text-dim);margin-bottom:5px;font-family:var(--font-mono);}
+  .field input, .field textarea, .field select{
+    width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:var(--radius);
+    background:var(--bg);color:var(--text);font-size:0.92rem;
+  }
+  .field textarea{resize:vertical;min-height:70px;}
+  .field-row{display:flex;gap:10px;}
+  .field-row .field{flex:1;}
+  .modal-actions{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:10px;}
+  .btn{
+    border:1px solid var(--border);background:var(--panel);color:var(--text);
+    padding:9px 16px;border-radius:var(--radius);font-size:0.88rem;
+  }
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600;}
+  .btn.ghost{border-color:transparent;color:var(--text-dim);}
+  .btn.danger-text{border-color:transparent;color:var(--danger);}
+
+  .toast{
+    position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+    background:var(--panel);border:1px solid var(--border);color:var(--text);
+    padding:10px 18px;border-radius:var(--radius);font-size:0.85rem;box-shadow:var(--shadow-modal);
+    z-index:200;font-family:var(--font-mono);
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width:820px){
+    #app{flex-direction:column;}
+    .sidebar{display:none;}
+    .topbar{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:20;
+    }
+    .topbar .brand{margin-bottom:0;}
+    .topbar-nav{display:flex;gap:14px;overflow-x:auto;padding:0 20px 14px;border-bottom:1px solid var(--border);}
+    .topbar-nav button{background:none;border:none;color:var(--text-dim);font-size:0.86rem;padding:4px 0;white-space:nowrap;}
+    .topbar-nav button.active{color:var(--accent);border-bottom:2px solid var(--accent);}
+    .view{padding:34px 20px 80px;}
+    .topbar-actions{display:flex;gap:8px;align-items:center;}
+  }
+</style>
+</head>
+<body>
+<div id="app"><div class="sidebar"><div class="brand">Daniel Kinyanjui Mbagara</div><div class="brand-sub">Cybersecurity Analyst</div><nav class="primary"><button>Overview<span class="dot"></span>Overview</button><button class="active">CV<span class="dot"></span>CV</button><button>Projects<span class="dot"></span>Projects</button><button>Lab Challenges<span class="dot"></span>Lab Challenges</button><button>Blog<span class="dot"></span>Blog</button><button>Contact<span class="dot"></span>Contact</button></nav><div class="sidebar-foot"><div class="status-chip"><span class="pulse"></span>Open to new opportunities</div><button class="edit-toggle on">● Editing — click to stop</button></div></div><main><div style="width: 100%;"><div class="topbar"><div class="brand">Daniel Kinyanjui Mbagara</div><div class="topbar-actions"><button class="edit-toggle on">Editing</button></div></div><div class="topbar-nav"><button>Overview</button><button class="active">CV</button><button>Projects</button><button>Lab Challenges</button><button>Blog</button><button>Contact</button></div></div><div class="view"><div class="view-header"><div class="kicker mono">RECORD</div><h1>CV</h1></div><div class="section-block"><h2>Experience<button class="add-inline">+ Add</button></h2><div class="entry"><div class="entry-top"><div><div class="entry-title">Virtual Assistant &amp; Community Ambassador Intern</div><div class="entry-org">Sand Technologies — Talent Readiness Team</div></div><div class="entry-dates">Mar 2024 – Feb 2025</div></div><ul><li>Drafted, managed, and automated professional email communications across internal and cross-functional teams</li><li>Standardized communication templates, increasing overall team productivity and output clarity</li><li>Coordinated virtual events and managed internal documentation to support remote program delivery</li><li>Tracked weekly program metrics and contributed key data points to end-of-program analytical reports</li></ul><div class="entry-actions"><button class="icon-btn">Edit</button></div></div><div class="entry"><div class="entry-top"><div><div class="entry-title">Virtual Assistant &amp; Content Specialist</div><div class="entry-org">Freelance Administrative &amp; Content Support</div></div><div class="entry-dates">Jan 2019 – Mar 2024</div></div><ul><li>Provided writing, editing, research, and virtual assistance services to a diverse global client portfolio</li><li>Managed multiple client projects concurrently, consistently meeting strict quality and delivery deadlines</li><li>Built long-term operational relationships through reliable communication and timely execution</li></ul><div class="entry-actions"><button class="icon-btn">Edit</button></div></div></div><div class="section-block"><h2>Education<button class="add-inline">+ Add</button></h2><div class="entry"><div class="entry-top"><div><div class="entry-title">Diploma in Cybersecurity</div><div class="entry-org">The Co-operative University of Kenya</div></div><div class="entry-dates">May 2025 – Dec 2026</div></div><div class="entry-actions"><button class="icon-btn">Edit</button></div></div><div class="entry"><div class="entry-top"><div><div class="entry-title">Diploma in Marketing Management</div><div class="entry-org">MTF Institute</div></div><div class="entry-dates">Feb 2024 – May 2024</div></div><div class="entry-actions"><button class="icon-btn">Edit</button></div></div></div><div class="section-block"><h2>Skills<button class="add-inline">+ Add group</button></h2><div class="skill-group"><h4>Technical</h4><div class="tag-row"><span class="tag">Cloud Computing Fundamentals (AWS)</span><span class="tag">Cybersecurity Fundamentals</span><span class="tag">Technical Documentation</span><button class="icon-btn" style="margin-left: 4px;">Edit</button></div></div><div class="skill-group"><h4>Administrative Tools</h4><div class="tag-row"><span class="tag">Email &amp; Calendar Management</span><span class="tag">Google Workspace</span><span class="tag">Microsoft Office Suite</span><span class="tag">Zoom</span><span class="tag">Google Meet</span><button class="icon-btn" style="margin-left: 4px;">Edit</button></div></div><div class="skill-group"><h4>Task &amp; Collaboration</h4><div class="tag-row"><span class="tag">Slack</span><span class="tag">Internet Research</span><span class="tag">Data Entry &amp; Reporting</span><button class="icon-btn" style="margin-left: 4px;">Edit</button></div></div><div class="skill-group"><h4>Soft Skills</h4><div class="tag-row"><span class="tag">Stakeholder Engagement</span><span class="tag">Time Management</span><span class="tag">Cross-Functional Communication</span><span class="tag">Problem-Solving</span><button class="icon-btn" style="margin-left: 4px;">Edit</button></div></div><div class="skill-group"><h4>Languages</h4><div class="tag-row"><span class="tag">English (Fluent)</span><span class="tag">Swahili (Native)</span><button class="icon-btn" style="margin-left: 4px;">Edit</button></div></div></div><div class="section-block"><h2>Certifications<button class="add-inline">+ Add</button></h2><div class="cert-row"><div><div class="cert-name">Cybersecurity Analyst Certification</div><div class="cert-meta">Cybershujaa · Sept 2026 – Nov 2026</div></div><button class="icon-btn">Edit</button></div><div class="cert-row"><div><div class="cert-name">Virtual Assistant Certificate</div><div class="cert-meta">ALX Africa · Aug 2024 – Oct 2024</div></div><button class="icon-btn">Edit</button></div><div class="cert-row"><div><div class="cert-name">Back-End Web Development Certificate</div><div class="cert-meta">ALX Africa · Aug 2024 – Feb 2025</div></div><button class="icon-btn">Edit</button></div><div class="cert-row"><div><div class="cert-name">Cybersecurity Fundamentals Certification</div><div class="cert-meta">IBM · Jun 2024 – Jul 2024</div></div><button class="icon-btn">Edit</button></div><div class="cert-row"><div><div class="cert-name">Cloud Computing Certification</div><div class="cert-meta">AWS Academy via ALX Africa · May 2023 – Mar 2024</div></div><button class="icon-btn">Edit</button></div><div class="cert-row"><div><div class="cert-name">Certificate in Plant Mechanics</div><div class="cert-meta">Kenya Institute of Highways &amp; Building Technology · 2018</div></div><button class="icon-btn">Edit</button></div></div></div></main></div>
+
+<script id="site-data" type="application/json">{
+  "profile": {
+    "name": "Daniel Kinyanjui Mbagara",
+    "title": "Cybersecurity Analyst",
+    "status": "Open to new opportunities",
+    "location": "Nairobi, Kenya",
+    "email": "mbagaradaniel@gmail.com",
+    "phone": "+254725449319",
+    "photo": "data:image/jpeg;base64,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",
+    "github": "https://github.com/DanielKinyanjuiMbagara",
+    "linkedin": "https://www.linkedin.com/in/daniel-k-mbagara",
+    "bio": "I am a cybersecurity professional with a strong foundation in cybersecurity, cloud computing, and web development. I am passionate about security analysis, threat detection, incident response, and cloud security, with a growing focus on understanding how modern systems and applications can be protected against evolving cyber threats.\n\nMy web development knowledge gives me a practical perspective on how applications and systems are built, while my cybersecurity and cloud computing training has strengthened my understanding of security principles, risks, and defensive practices. I combine these skills with analytical thinking, attention to detail, continuous learning, and a hands-on approach to solving security challenges.\n\nI am enhancing my knowledge to be a competitive Cybersecurity Analyst who can investigate security events, identify and analyze potential threats, communicate technical risks clearly, and contribute to creating secure and resilient digital environments."
+  },
+  "cv": {
+    "experience": [
+      {
+        "role": "Virtual Assistant & Community Ambassador Intern",
+        "org": "Sand Technologies — Talent Readiness Team",
+        "start": "Mar 2024",
+        "end": "Feb 2025",
+        "bullets": [
+          "Drafted, managed, and automated professional email communications across internal and cross-functional teams",
+          "Standardized communication templates, increasing overall team productivity and output clarity",
+          "Coordinated virtual events and managed internal documentation to support remote program delivery",
+          "Tracked weekly program metrics and contributed key data points to end-of-program analytical reports"
+        ]
+      },
+      {
+        "role": "Virtual Assistant & Content Specialist",
+        "org": "Freelance Administrative & Content Support",
+        "start": "Jan 2019",
+        "end": "Mar 2024",
+        "bullets": [
+          "Provided writing, editing, research, and virtual assistance services to a diverse global client portfolio",
+          "Managed multiple client projects concurrently, consistently meeting strict quality and delivery deadlines",
+          "Built long-term operational relationships through reliable communication and timely execution"
+        ]
+      }
+    ],
+    "education": [
+      {
+        "role": "Diploma in Cybersecurity",
+        "org": "The Co-operative University of Kenya",
+        "start": "May 2025",
+        "end": "Dec 2026",
+        "bullets": []
+      },
+      {
+        "role": "Diploma in Marketing Management",
+        "org": "MTF Institute",
+        "start": "Feb 2024",
+        "end": "May 2024",
+        "bullets": []
+      }
+    ],
+    "skills": [
+      {
+        "group": "Technical",
+        "items": [
+          "Cloud Computing Fundamentals (AWS)",
+          "Cybersecurity Fundamentals",
+          "Technical Documentation"
+        ]
+      },
+      {
+        "group": "Administrative Tools",
+        "items": [
+          "Email & Calendar Management",
+          "Google Workspace",
+          "Microsoft Office Suite",
+          "Zoom",
+          "Google Meet"
+        ]
+      },
+      {
+        "group": "Task & Collaboration",
+        "items": [
+          "Slack",
+          "Internet Research",
+          "Data Entry & Reporting"
+        ]
+      },
+      {
+        "group": "Soft Skills",
+        "items": [
+          "Stakeholder Engagement",
+          "Time Management",
+          "Cross-Functional Communication",
+          "Problem-Solving"
+        ]
+      },
+      {
+        "group": "Languages",
+        "items": [
+          "English (Fluent)",
+          "Swahili (Native)"
+        ]
+      }
+    ],
+    "certifications": [
+      {
+        "name": "Cybersecurity Analyst Certification",
+        "issuer": "Cybershujaa",
+        "date": "Sept 2026 – Nov 2026",
+        "credentialId": ""
+      },
+      {
+        "name": "Virtual Assistant Certificate",
+        "issuer": "ALX Africa",
+        "date": "Aug 2024 – Oct 2024",
+        "credentialId": ""
+      },
+      {
+        "name": "Back-End Web Development Certificate",
+        "issuer": "ALX Africa",
+        "date": "Aug 2024 – Feb 2025",
+        "credentialId": ""
+      },
+      {
+        "name": "Cybersecurity Fundamentals Certification",
+        "issuer": "IBM",
+        "date": "Jun 2024 – Jul 2024",
+        "credentialId": ""
+      },
+      {
+        "name": "Cloud Computing Certification",
+        "issuer": "AWS Academy via ALX Africa",
+        "date": "May 2023 – Mar 2024",
+        "credentialId": ""
+      },
+      {
+        "name": "Certificate in Plant Mechanics",
+        "issuer": "Kenya Institute of Highways & Building Technology",
+        "date": "2018",
+        "credentialId": ""
+      }
+    ]
+  },
+  "projects": [
+    {
+      "title": "Example: A coursework project — replace this",
+      "date": "2026",
+      "status": "Ongoing",
+      "tags": [
+        "Add",
+        "your",
+        "tags"
+      ],
+      "summary": "Describe a project from your university coursework — the problem it solved, how you built it, and what you learned. Use '+ Add project' to add your real ones, then delete this card.",
+      "link": ""
+    },
+    {
+      "title": "Example: A personal build — replace this",
+      "date": "2026",
+      "status": "Ongoing",
+      "tags": [
+        "Add",
+        "your",
+        "tags"
+      ],
+      "summary": "A script, tool, or small app you built on your own initiative — what it does and why you made it.",
+      "link": ""
+    },
+    {
+      "title": "Example: A group or training project — replace this",
+      "date": "2026",
+      "status": "Ongoing",
+      "tags": [
+        "Add",
+        "your",
+        "tags"
+      ],
+      "summary": "Something you contributed to as part of a team, bootcamp, or training program.",
+      "link": ""
+    }
+  ],
+  "labs": [
+    {
+      "title": "Introduction to Cyber Security",
+      "date": "16 Sep 2026",
+      "tags": [
+        "TryHackMe",
+        "Cybersecurity Fundamentals"
+      ],
+      "problemStatement": "Get hands-on with both sides of security in one module: exploit a vulnerable web app from the attacker's seat, then work through SOC-style detection, monitoring, and incident response from the defender's seat.",
+      "approach": "Completed the guided offensive room first to understand attacker behavior, then moved to the defensive room to see how the same activity would appear from a monitoring standpoint, tying each technique back to the corresponding detection or response step.",
+      "tools": [
+        "TryHackMe rooms",
+        "Guided web exploitation",
+        "SOC workflow walkthrough"
+      ],
+      "lessons": "The biggest shift was realizing how closely defensive analysis mirrors an attacker's own thought process — effective monitoring depends on understanding exactly how an intrusion unfolds, not just watching for anomalies in isolation.",
+      "screenshots": [],
+      "link": "https://tryhackme.com/dashboard"
+    },
+    {
+      "title": "Introduction to Web Applications",
+      "date": "15 Sep 2026",
+      "tags": [
+        "Hack The Box",
+        "Web Application Security"
+      ],
+      "problemStatement": "Work through a set of web-application fundamentals — from HTML/CSS/JS structure to sensitive data exposure, HTML injection, XSS, CSRF, and back-end/database concepts — and answer challenge questions tied to a live vulnerable app, including extracting an exposed password and a session cookie via XSS.",
+      "approach": "Inspected page source and client-side code for exposed secrets, tested injected payloads against form inputs to confirm HTML injection and XSS, and used curl to query a backend API directly (index.php?id=) to enumerate a user by ID.",
+      "tools": [
+        "Browser DevTools",
+        "curl",
+        "XSS payloads",
+        "CVE/CVSS databases"
+      ],
+      "lessons": "Confirmed that a large share of exploitable issues live in things developers assume are hidden — comments, endpoints, and client-side validation that isn't backed up server-side. Also learned to start the target lab machine before hitting the URL, after losing time to a timeout that had nothing to do with the exploit itself.",
+      "screenshots": [],
+      "link": "https://academy.hackthebox.com/achievement/2868441/75"
+    },
+    {
+      "title": "Linux Fundamentals",
+      "date": "14 Sep 2026",
+      "tags": [
+        "Hack The Box",
+        "Linux"
+      ],
+      "problemStatement": "Answer a set of practical questions about a live Linux target — identify system architecture, locate home/mail paths, determine the default shell and kernel version, and find the correct network interface — using only command-line exploration.",
+      "approach": "Connected to the target host and worked through each question systematically with core Linux utilities (uname, pwd, echo, ip a, ls -la), verifying each answer with a second command before submitting.",
+      "tools": [
+        "Linux CLI",
+        "SSH",
+        "grep / awk / sed",
+        "systemctl",
+        "iptables"
+      ],
+      "lessons": "Reinforced that a security analyst's speed comes from knowing where to look — filesystem hierarchy, permission bits, systemd/journalctl for service state, and auth/syslog for activity — rather than memorizing every flag. Also learned the hard way that verifying which host a command runs against matters as much as the command itself, after miscounting partitions by running a check on the wrong machine.",
+      "screenshots": [],
+      "link": "https://academy.hackthebox.com/achievement/2868441/18"
+    },
+    {
+      "title": "Windows Fundamentals — Week 1",
+      "date": "12 Sep 2026",
+      "tags": [
+        "Hack The Box",
+        "Windows"
+      ],
+      "problemStatement": "Connect to a Windows target over RDP and answer questions about its build/version, locate a flagged file in a non-standard directory, identify NTFS permission ownership, and pull user/group SIDs via WMI.",
+      "approach": "Used xfreerdp to access the box, then queried system details with winver, dir/tree, and icacls. Getting SIDs required switching WMIC into interactive mode after a syntax error, and a wrong BIOS-serial answer led to learning the difference between the Win32_Bios and Win32_OperatingSystem serial numbers.",
+      "tools": [
+        "RDP (xfreerdp)",
+        "WMI / WMIC",
+        "icacls",
+        "Windows CLI"
+      ],
+      "lessons": "First real exposure to querying Windows entirely from the command line rather than the Settings GUI — a concrete step toward thinking like an investigator working from a shell instead of a mouse.",
+      "screenshots": [],
+      "link": "https://academy.hackthebox.com/achievement/2868441/49"
+    }
+  ],
+  "blog": [
+    {
+      "title": "What I learned setting up my first SOC lab",
+      "date": "2026-01-10",
+      "tags": [
+        "learning",
+        "soc"
+      ],
+      "body": "Replace this with your own post.\n\nWrite about what you tried, what broke, and what you'd do differently. Split paragraphs with a blank line."
+    }
+  ]
+}</script>
+
+<script>
+(function(){
+  "use strict";
+
+  var dataEl = document.getElementById('site-data');
+  var data = JSON.parse(dataEl.textContent);
+  var state = { view: 'home', editMode: false, canEdit: true, postIndex: null };
+
+  function uid(){ return Math.random().toString(36).slice(2,9); }
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function nl2p(s){
+    return String(s||'').split(/\n\s*\n/).map(function(p){ return '<p>'+esc(p).replace(/\n/g,'<br>')+'</p>'; }).join('');
+  }
+  function excerpt(s, n){
+    var t = String(s||'').replace(/\s+/g,' ').trim();
+    return t.length > n ? t.slice(0,n).trim()+'…' : t;
+  }
+  function readImageResized(file, maxDim, quality, cb){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var w = img.width, h = img.height;
+        if (w > maxDim || h > maxDim){
+          if (w > h){ h = Math.round(h * (maxDim/w)); w = maxDim; }
+          else { w = Math.round(w * (maxDim/h)); h = maxDim; }
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        cb(canvas.toDataURL('image/jpeg', quality || 0.85));
+      };
+      img.onerror = function(){ cb(null); };
+      img.src = e.target.result;
+    };
+    reader.onerror = function(){ cb(null); };
+    reader.readAsDataURL(file);
+  }
+
+  function showToast(msg){
+    var t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function(){ t.remove(); }, 2600);
+  }
+
+  function publishSite(){
+    var clone = document.documentElement.cloneNode(true);
+    clone.removeAttribute('data-editing');
+    var overlays = clone.querySelectorAll('.overlay');
+    overlays.forEach(function(o){ o.remove(); });
+    var toasts = clone.querySelectorAll('.toast');
+    toasts.forEach(function(o){ o.remove(); });
+    var sd = clone.querySelector('#site-data');
+    if (sd) { sd.textContent = JSON.stringify(data, null, 2); }
+    var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+
+    try {
+      var blob = new Blob([html], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+      showToast('Downloaded index.html — upload it to your host to go live');
+    } catch (e) {
+      showToast('Could not prepare the download — try again');
+    }
+  }
+
+  function persist(){ renderApp(); publishSite(); }
+
+  /* ---------- Modal helpers ---------- */
+  function closeModal(){
+    var o = document.querySelector('.overlay');
+    if (o) o.remove();
+  }
+  function openModal(title, fieldsHtml, onSave, opts){
+    closeModal();
+    opts = opts || {};
+    var overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    overlay.innerHTML =
+      '<div class="modal">' +
+        '<h3>'+esc(title)+'</h3>' +
+        '<div class="modal-body">'+fieldsHtml+'</div>' +
+        '<div class="modal-actions">' +
+          (opts.onDelete ? '<button type="button" class="btn danger-text" data-act="del">Delete</button>' : '<span></span>') +
+          '<div style="display:flex;gap:8px;">' +
+            '<button type="button" class="btn ghost" data-act="cancel">Cancel</button>' +
+            '<button type="button" class="btn primary" data-act="save">Save</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    overlay.addEventListener('mousedown', function(e){ if (e.target === overlay) closeModal(); });
+    overlay.querySelector('[data-act="cancel"]').addEventListener('click', closeModal);
+    overlay.querySelector('[data-act="save"]').addEventListener('click', function(){
+      var ok = onSave(overlay);
+      if (ok !== false){ closeModal(); persist(); }
+    });
+    if (opts.onDelete){
+      overlay.querySelector('[data-act="del"]').addEventListener('click', function(){
+        opts.onDelete();
+        closeModal();
+        persist();
+      });
+    }
+    document.body.appendChild(overlay);
+    var firstInput = overlay.querySelector('input,textarea');
+    if (firstInput) firstInput.focus();
+  }
+  function val(overlay, sel){ var el = overlay.querySelector(sel); return el ? el.value.trim() : ''; }
+  function tagsToList(s){ return s.split(',').map(function(t){return t.trim();}).filter(Boolean); }
+
+  /* ---------- Edit dialogs ---------- */
+  function editProfile(){
+    var p = data.profile;
+    openModal('Edit profile',
+      '<div class="photo-field">' +
+        (p.photo ? '<img class="photo-preview" id="f-photo-preview" src="'+p.photo+'">' : '<div class="photo-preview-placeholder" id="f-photo-preview">No photo</div>') +
+        '<div>' +
+          '<input type="file" id="f-photo-input" accept="image/*" style="display:none;">' +
+          '<button type="button" class="btn" id="f-photo-btn" style="margin-bottom:6px;">Upload photo</button>' +
+          (p.photo ? '<button type="button" class="btn ghost" id="f-photo-remove" style="margin-left:6px;">Remove</button>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="field"><label>Name</label><input id="f-name" value="'+esc(p.name)+'"></div>' +
+      '<div class="field"><label>Title</label><input id="f-title" value="'+esc(p.title)+'"></div>' +
+      '<div class="field"><label>Status line</label><input id="f-status" value="'+esc(p.status)+'"></div>' +
+      '<div class="field"><label>Location</label><input id="f-location" value="'+esc(p.location)+'"></div>' +
+      '<div class="field"><label>Professional statement / bio</label><textarea id="f-bio">'+esc(p.bio)+'</textarea></div>' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Email</label><input id="f-email" value="'+esc(p.email)+'"></div>' +
+        '<div class="field"><label>Phone (optional)</label><input id="f-phone" value="'+esc(p.phone||'')+'"></div>' +
+      '</div>' +
+      '<div class="field-row">' +
+        '<div class="field"><label>GitHub URL</label><input id="f-github" value="'+esc(p.github)+'"></div>' +
+        '<div class="field"><label>LinkedIn URL</label><input id="f-linkedin" value="'+esc(p.linkedin)+'"></div>' +
+      '</div>',
+      function(overlay){
+        p.name = val(overlay,'#f-name') || p.name;
+        p.title = val(overlay,'#f-title');
+        p.status = val(overlay,'#f-status');
+        p.location = val(overlay,'#f-location');
+        p.bio = val(overlay,'#f-bio');
+        p.email = val(overlay,'#f-email');
+        p.phone = val(overlay,'#f-phone');
+        p.github = val(overlay,'#f-github');
+        p.linkedin = val(overlay,'#f-linkedin');
+        p.photo = overlay.dataset.photo !== undefined ? overlay.dataset.photo : p.photo;
+        document.title = (p.name || 'Portfolio') + ' — Cybersecurity Portfolio';
+      }
+    );
+    var overlayEl = document.querySelector('.overlay');
+    var btn = overlayEl.querySelector('#f-photo-btn');
+    var input = overlayEl.querySelector('#f-photo-input');
+    var removeBtn = overlayEl.querySelector('#f-photo-remove');
+    btn.addEventListener('click', function(){ input.click(); });
+    input.addEventListener('change', function(){
+      var file = input.files[0];
+      if (!file) return;
+      readImageResized(file, 480, 0.85, function(dataUrl){
+        if (!dataUrl){ showToast('Could not read that image'); return; }
+        overlayEl.dataset.photo = dataUrl;
+        var preview = overlayEl.querySelector('#f-photo-preview');
+        var img = document.createElement('img');
+        img.className = 'photo-preview'; img.id = 'f-photo-preview'; img.src = dataUrl;
+        preview.replaceWith(img);
+      });
+    });
+    if (removeBtn){
+      removeBtn.addEventListener('click', function(){
+        overlayEl.dataset.photo = '';
+        var preview = overlayEl.querySelector('#f-photo-preview');
+        var ph = document.createElement('div');
+        ph.className = 'photo-preview-placeholder'; ph.id = 'f-photo-preview'; ph.textContent = 'No photo';
+        preview.replaceWith(ph);
+        removeBtn.remove();
+      });
+    }
+  }
+
+  function editCvEntry(section, index){
+    var list = data.cv[section];
+    var item = index == null ? { role:'', org:'', start:'', end:'', bullets:[] } : list[index];
+    var isEdu = section === 'education';
+    openModal((index==null?'Add ':'Edit ') + (isEdu ? 'education' : 'experience'),
+      '<div class="field"><label>'+(isEdu?'Degree / program':'Role')+'</label><input id="f-role" value="'+esc(item.role)+'"></div>' +
+      '<div class="field"><label>'+(isEdu?'School':'Organization')+'</label><input id="f-org" value="'+esc(item.org)+'"></div>' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Start</label><input id="f-start" value="'+esc(item.start)+'"></div>' +
+        '<div class="field"><label>End</label><input id="f-end" value="'+esc(item.end)+'" placeholder="Present"></div>' +
+      '</div>' +
+      '<div class="field"><label>Highlights (one per line)</label><textarea id="f-bullets">'+esc((item.bullets||[]).join('\n'))+'</textarea></div>',
+      function(overlay){
+        var newItem = {
+          role: val(overlay,'#f-role'),
+          org: val(overlay,'#f-org'),
+          start: val(overlay,'#f-start'),
+          end: val(overlay,'#f-end'),
+          bullets: val(overlay,'#f-bullets').split('\n').map(function(s){return s.trim();}).filter(Boolean)
+        };
+        if (!newItem.role){ showToast('Add a title first'); return false; }
+        if (index == null) list.push(newItem); else list[index] = newItem;
+      },
+      index == null ? {} : { onDelete: function(){ list.splice(index,1); } }
+    );
+  }
+
+  function editSkillGroup(index){
+    var list = data.cv.skills;
+    var item = index == null ? { group:'', items:[] } : list[index];
+    openModal(index==null?'Add skill group':'Edit skill group',
+      '<div class="field"><label>Group name</label><input id="f-group" value="'+esc(item.group)+'" placeholder="e.g. Security tools"></div>' +
+      '<div class="field"><label>Skills (comma-separated)</label><textarea id="f-items">'+esc((item.items||[]).join(', '))+'</textarea></div>',
+      function(overlay){
+        var g = val(overlay,'#f-group');
+        if (!g){ showToast('Name the group first'); return false; }
+        var newItem = { group:g, items: tagsToList(val(overlay,'#f-items')) };
+        if (index == null) list.push(newItem); else list[index] = newItem;
+      },
+      index == null ? {} : { onDelete: function(){ list.splice(index,1); } }
+    );
+  }
+
+  function editCert(index){
+    var list = data.cv.certifications;
+    var item = index == null ? { name:'', issuer:'', date:'', credentialId:'' } : list[index];
+    openModal(index==null?'Add certification':'Edit certification',
+      '<div class="field"><label>Name</label><input id="f-cname" value="'+esc(item.name)+'"></div>' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Issuer</label><input id="f-cissuer" value="'+esc(item.issuer)+'"></div>' +
+        '<div class="field"><label>Date</label><input id="f-cdate" value="'+esc(item.date)+'"></div>' +
+      '</div>' +
+      '<div class="field"><label>Credential ID (optional)</label><input id="f-ccred" value="'+esc(item.credentialId)+'"></div>',
+      function(overlay){
+        var name = val(overlay,'#f-cname');
+        if (!name){ showToast('Add a certification name'); return false; }
+        var newItem = { name:name, issuer:val(overlay,'#f-cissuer'), date:val(overlay,'#f-cdate'), credentialId:val(overlay,'#f-ccred') };
+        if (index == null) list.push(newItem); else list[index] = newItem;
+      },
+      index == null ? {} : { onDelete: function(){ list.splice(index,1); } }
+    );
+  }
+
+  function editProject(index){
+    var list = data.projects;
+    var item = index == null ? { title:'', date:'', status:'Ongoing', tags:[], summary:'', link:'' } : list[index];
+    openModal(index==null?'Add project':'Edit project',
+      '<div class="field"><label>Title</label><input id="f-ptitle" value="'+esc(item.title)+'"></div>' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Date</label><input id="f-pdate" value="'+esc(item.date)+'"></div>' +
+        '<div class="field"><label>Status</label>' +
+          '<select id="f-pstatus">' +
+            ['Ongoing','Completed','Archived'].map(function(s){ return '<option'+(item.status===s?' selected':'')+'>'+s+'</option>'; }).join('') +
+          '</select>' +
+        '</div>' +
+      '</div>' +
+      '<div class="field"><label>Tags (comma-separated)</label><input id="f-ptags" value="'+esc((item.tags||[]).join(', '))+'"></div>' +
+      '<div class="field"><label>Summary</label><textarea id="f-psummary">'+esc(item.summary)+'</textarea></div>' +
+      '<div class="field"><label>Link (repo or demo, optional)</label><input id="f-plink" value="'+esc(item.link)+'"></div>',
+      function(overlay){
+        var title = val(overlay,'#f-ptitle');
+        if (!title){ showToast('Add a project title'); return false; }
+        var newItem = {
+          title:title, date:val(overlay,'#f-pdate'), status:val(overlay,'#f-pstatus'),
+          tags: tagsToList(val(overlay,'#f-ptags')), summary:val(overlay,'#f-psummary'), link:val(overlay,'#f-plink')
+        };
+        if (index == null) list.push(newItem); else list[index] = newItem;
+      },
+      index == null ? {} : { onDelete: function(){ list.splice(index,1); if (state.view==='projects'){} } }
+    );
+  }
+
+  function editLab(index){
+    var list = data.labs;
+    var item = index == null ? { title:'', date:'', tags:[], problemStatement:'', approach:'', tools:[], lessons:'', screenshots:[], link:'' } : list[index];
+    var shots = (item.screenshots || []).slice();
+    openModal(index==null?'Add lab challenge':'Edit lab challenge',
+      '<div class="field"><label>Title</label><input id="f-ltitle" value="'+esc(item.title)+'"></div>' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Date</label><input id="f-ldate" value="'+esc(item.date)+'"></div>' +
+        '<div class="field"><label>Tags (comma-separated)</label><input id="f-ltags" value="'+esc((item.tags||[]).join(', '))+'"></div>' +
+      '</div>' +
+      '<div class="field"><label>Problem statement</label><textarea id="f-lproblem">'+esc(item.problemStatement)+'</textarea></div>' +
+      '<div class="field"><label>Approach</label><textarea id="f-lapproach">'+esc(item.approach)+'</textarea></div>' +
+      '<div class="field"><label>Tools used (comma-separated)</label><input id="f-ltools" value="'+esc((item.tools||[]).join(', '))+'"></div>' +
+      '<div class="field"><label>Key lessons learned</label><textarea id="f-llessons">'+esc(item.lessons)+'</textarea></div>' +
+      '<div class="field"><label>Screenshots (optional)</label>' +
+        '<div id="f-lshots" class="lab-shots"></div>' +
+        '<input type="file" id="f-lshot-input" accept="image/*" multiple style="display:none;">' +
+        '<button type="button" class="btn" id="f-lshot-btn" style="margin-top:8px;">Add screenshot</button>' +
+      '</div>' +
+      '<div class="field"><label>Completion link (optional)</label><input id="f-llink" value="'+esc(item.link)+'"></div>',
+      function(overlay){
+        var title = val(overlay,'#f-ltitle');
+        if (!title){ showToast('Add a title first'); return false; }
+        var newItem = {
+          title:title, date:val(overlay,'#f-ldate'), tags:tagsToList(val(overlay,'#f-ltags')),
+          problemStatement:val(overlay,'#f-lproblem'), approach:val(overlay,'#f-lapproach'),
+          tools:tagsToList(val(overlay,'#f-ltools')), lessons:val(overlay,'#f-llessons'),
+          screenshots: shots, link:val(overlay,'#f-llink')
+        };
+        if (index == null) list.unshift(newItem); else list[index] = newItem;
+      },
+      index == null ? {} : { onDelete: function(){ list.splice(index,1); } }
+    );
+    var overlayEl = document.querySelector('.overlay');
+    var shotsWrap = overlayEl.querySelector('#f-lshots');
+    var shotInput = overlayEl.querySelector('#f-lshot-input');
+    function renderShots(){
+      shotsWrap.innerHTML = '';
+      shots.forEach(function(src, i){
+        var wrap = document.createElement('div'); wrap.style.position = 'relative';
+        var img = document.createElement('img'); img.src = src;
+        var rm = document.createElement('button');
+        rm.type = 'button'; rm.className = 'icon-btn danger';
+        rm.textContent = '✕'; rm.style.position='absolute'; rm.style.top='2px'; rm.style.right='2px';
+        rm.addEventListener('click', function(){ shots.splice(i,1); renderShots(); });
+        wrap.appendChild(img); wrap.appendChild(rm);
+        shotsWrap.appendChild(wrap);
+      });
+    }
+    renderShots();
+    overlayEl.querySelector('#f-lshot-btn').addEventListener('click', function(){ shotInput.click(); });
+    shotInput.addEventListener('change', function(){
+      Array.prototype.forEach.call(shotInput.files, function(file){
+        readImageResized(file, 900, 0.8, function(dataUrl){
+          if (dataUrl){ shots.push(dataUrl); renderShots(); }
+        });
+      });
+      shotInput.value = '';
+    });
+  }
+
+  function editPost(index){
+    var list = data.blog;
+    var item = index == null ? { title:'', date:new Date().toISOString().slice(0,10), tags:[], body:'' } : list[index];
+    openModal(index==null?'New post':'Edit post',
+      '<div class="field"><label>Title</label><input id="f-btitle" value="'+esc(item.title)+'"></div>' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Date</label><input id="f-bdate" type="date" value="'+esc(item.date)+'"></div>' +
+        '<div class="field"><label>Tags (comma-separated)</label><input id="f-btags" value="'+esc((item.tags||[]).join(', '))+'"></div>' +
+      '</div>' +
+      '<div class="field"><label>Body (blank line = new paragraph)</label><textarea id="f-bbody" style="min-height:180px;">'+esc(item.body)+'</textarea></div>',
+      function(overlay){
+        var title = val(overlay,'#f-btitle');
+        if (!title){ showToast('Add a post title'); return false; }
+        var newItem = { title:title, date:val(overlay,'#f-bdate'), tags:tagsToList(val(overlay,'#f-btags')), body:val(overlay,'#f-bbody') };
+        if (index == null) list.unshift(newItem); else list[index] = newItem;
+        state.postIndex = index == null ? 0 : index;
+      },
+      index == null ? {} : { onDelete: function(){ list.splice(index,1); state.view='blog'; state.postIndex=null; } }
+    );
+  }
+
+  /* ---------- Renderers ---------- */
+  function editBtn(onClick, label){
+    var b = document.createElement('button');
+    b.className = 'icon-btn';
+    b.textContent = label || 'Edit';
+    b.addEventListener('click', function(e){ e.stopPropagation(); onClick(); });
+    return b;
+  }
+
+  function renderNavButtons(container, topbar){
+    var items = [
+      ['home','Overview'], ['cv','Resume'], ['projects','Projects'], ['labs','Lab Challenges'], ['blog','Blog'], ['contacts','Contact']
+    ];
+    items.forEach(function(it){
+      var b = document.createElement('button');
+      b.textContent = it[1];
+      if (!topbar){
+        var dot = document.createElement('span'); dot.className='dot';
+        b.appendChild(dot);
+        b.appendChild(document.createTextNode(it[1]));
+      }
+      if (state.view === it[0] || (it[0]==='blog' && state.view==='post')) b.className = 'active';
+      b.addEventListener('click', function(){ state.view = it[0]; state.postIndex=null; renderApp(); window.scrollTo(0,0); });
+      container.appendChild(b);
+    });
+  }
+
+  function viewHome(root){
+    var p = data.profile;
+    var v = document.createElement('div');
+    v.className = 'view home-hero';
+    v.innerHTML =
+      '<div class="kicker mono">PROFILE</div>' +
+      '<div class="home-photo-row">' +
+        (p.photo ? '<img class="home-photo" src="'+p.photo+'">' : '<div class="home-photo-placeholder">No photo</div>') +
+        '<div><h1 style="margin-bottom:2px;">'+esc(p.name)+'</h1><div class="role" style="margin-bottom:0;">'+esc(p.title)+'</div></div>' +
+      '</div>' +
+      '<div class="home-bio">'+nl2p(p.bio)+'</div>';
+    if (state.editMode){
+      var eb = editBtn(editProfile, 'Edit profile');
+      eb.style.marginTop = '10px';
+      v.appendChild(eb);
+    }
+    root.appendChild(v);
+  }
+
+  function viewCv(root){
+    var v = document.createElement('div');
+    v.className = 'view';
+    v.innerHTML = '<div class="view-header"><div class="kicker mono">RECORD</div><h1>Resume</h1></div>';
+
+    // Experience
+    var expBlock = document.createElement('div'); expBlock.className='section-block';
+    var expHead = document.createElement('h2');
+    expHead.innerHTML = 'Experience';
+    if (state.editMode){
+      var addExp = document.createElement('button'); addExp.className='add-inline'; addExp.textContent='+ Add';
+      addExp.addEventListener('click', function(){ editCvEntry('experience', null); });
+      expHead.appendChild(addExp);
+    }
+    expBlock.appendChild(expHead);
+    if (!data.cv.experience.length){
+      expBlock.innerHTML += '<div class="empty-state">No experience added yet.</div>';
+    }
+    data.cv.experience.forEach(function(item, i){
+      expBlock.appendChild(renderEntry(item, function(){ editCvEntry('experience', i); }));
+    });
+    v.appendChild(expBlock);
+
+    // Education
+    var eduBlock = document.createElement('div'); eduBlock.className='section-block';
+    var eduHead = document.createElement('h2'); eduHead.innerHTML = 'Education';
+    if (state.editMode){
+      var addEdu = document.createElement('button'); addEdu.className='add-inline'; addEdu.textContent='+ Add';
+      addEdu.addEventListener('click', function(){ editCvEntry('education', null); });
+      eduHead.appendChild(addEdu);
+    }
+    eduBlock.appendChild(eduHead);
+    if (!data.cv.education.length){ eduBlock.innerHTML += '<div class="empty-state">No education added yet.</div>'; }
+    data.cv.education.forEach(function(item, i){
+      eduBlock.appendChild(renderEntry(item, function(){ editCvEntry('education', i); }));
+    });
+    v.appendChild(eduBlock);
+
+    // Skills
+    var skillBlock = document.createElement('div'); skillBlock.className='section-block';
+    var skillHead = document.createElement('h2'); skillHead.innerHTML = 'Skills';
+    if (state.editMode){
+      var addSkill = document.createElement('button'); addSkill.className='add-inline'; addSkill.textContent='+ Add group';
+      addSkill.addEventListener('click', function(){ editSkillGroup(null); });
+      skillHead.appendChild(addSkill);
+    }
+    skillBlock.appendChild(skillHead);
+    if (!data.cv.skills.length){ skillBlock.innerHTML += '<div class="empty-state">No skills added yet.</div>'; }
+    data.cv.skills.forEach(function(g, i){
+      var gEl = document.createElement('div'); gEl.className='skill-group';
+      gEl.innerHTML = '<h4>'+esc(g.group)+'</h4>';
+      var row = document.createElement('div'); row.className='tag-row';
+      g.items.forEach(function(it){ var t=document.createElement('span'); t.className='tag'; t.textContent=it; row.appendChild(t); });
+      if (state.editMode){
+        var eb = editBtn(function(){ editSkillGroup(i); }); eb.style.marginLeft='4px';
+        row.appendChild(eb);
+      }
+      gEl.appendChild(row);
+      skillBlock.appendChild(gEl);
+    });
+    v.appendChild(skillBlock);
+
+    // Certifications
+    var certBlock = document.createElement('div'); certBlock.className='section-block';
+    var certHead = document.createElement('h2'); certHead.innerHTML = 'Certifications';
+    if (state.editMode){
+      var addCert = document.createElement('button'); addCert.className='add-inline'; addCert.textContent='+ Add';
+      addCert.addEventListener('click', function(){ editCert(null); });
+      certHead.appendChild(addCert);
+    }
+    certBlock.appendChild(certHead);
+    if (!data.cv.certifications.length){ certBlock.innerHTML += '<div class="empty-state">No certifications added yet.</div>'; }
+    data.cv.certifications.forEach(function(c, i){
+      var row = document.createElement('div'); row.className='cert-row';
+      row.innerHTML =
+        '<div><div class="cert-name">'+esc(c.name)+'</div>' +
+        '<div class="cert-meta">'+esc(c.issuer)+(c.date?' · '+esc(c.date):'')+(c.credentialId?' · '+esc(c.credentialId):'')+'</div></div>';
+      if (state.editMode){
+        var eb = editBtn(function(){ editCert(i); }); row.appendChild(eb);
+      }
+      certBlock.appendChild(row);
+    });
+    v.appendChild(certBlock);
+
+    root.appendChild(v);
+  }
+
+  function renderEntry(item, onEdit){
+    var e = document.createElement('div'); e.className = 'entry';
+    e.innerHTML =
+      '<div class="entry-top">' +
+        '<div><div class="entry-title">'+esc(item.role)+'</div><div class="entry-org">'+esc(item.org)+'</div></div>' +
+        '<div class="entry-dates">'+esc(item.start)+' – '+esc(item.end||'Present')+'</div>' +
+      '</div>' +
+      (item.bullets && item.bullets.length ? '<ul>'+item.bullets.map(function(b){return '<li>'+esc(b)+'</li>';}).join('')+'</ul>' : '');
+    if (state.editMode){
+      var actions = document.createElement('div'); actions.className='entry-actions';
+      actions.appendChild(editBtn(onEdit));
+      e.appendChild(actions);
+    }
+    return e;
+  }
+
+  function viewProjects(root){
+    var v = document.createElement('div'); v.className = 'view';
+    var head = document.createElement('div'); head.className='view-header';
+    head.innerHTML = '<div class="kicker mono">CASE FILES</div><h1>Projects</h1>';
+    v.appendChild(head);
+    if (state.editMode){
+      var addBtn = document.createElement('button'); addBtn.className='add-inline'; addBtn.textContent='+ Add project';
+      addBtn.style.marginBottom='18px';
+      addBtn.addEventListener('click', function(){ editProject(null); });
+      v.appendChild(addBtn);
+    }
+    if (!data.projects.length){
+      var empty = document.createElement('div'); empty.className='empty-state'; empty.textContent='No projects yet.';
+      v.appendChild(empty);
+    }
+    data.projects.forEach(function(p, i){
+      var card = document.createElement('div'); card.className = 'project';
+      card.innerHTML =
+        '<div class="project-top">' +
+          '<span class="project-title">'+esc(p.title)+'<span class="project-status">'+esc(p.status||'')+'</span></span>' +
+          '<span class="project-date">'+esc(p.date)+'</span>' +
+        '</div>' +
+        '<div class="project-summary">'+esc(p.summary)+'</div>' +
+        '<div class="project-foot">' +
+          '<div class="tag-row">'+(p.tags||[]).map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join('')+'</div>' +
+          (p.link ? '<a class="project-link" href="'+esc(p.link)+'" target="_blank" rel="noopener">View →</a>' : '') +
+        '</div>';
+      if (state.editMode){
+        var actions = document.createElement('div'); actions.className='project-actions';
+        actions.appendChild(editBtn(function(){ editProject(i); }));
+        card.appendChild(actions);
+      }
+      v.appendChild(card);
+    });
+    root.appendChild(v);
+  }
+
+  function viewLabs(root){
+    var v = document.createElement('div'); v.className = 'view';
+    var head = document.createElement('div'); head.className='view-header';
+    head.innerHTML = '<div class="kicker mono">CTF LOG</div><h1>Lab Challenges</h1>';
+    v.appendChild(head);
+    if (state.editMode){
+      var addBtn = document.createElement('button'); addBtn.className='add-inline'; addBtn.textContent='+ Add lab challenge';
+      addBtn.style.marginBottom='18px';
+      addBtn.addEventListener('click', function(){ editLab(null); });
+      v.appendChild(addBtn);
+    }
+    if (!data.labs.length){
+      var empty = document.createElement('div'); empty.className='empty-state'; empty.textContent='No lab challenges added yet.';
+      v.appendChild(empty);
+    }
+    data.labs.forEach(function(l, i){
+      var card = document.createElement('div'); card.className = 'lab';
+      card.innerHTML =
+        '<div class="lab-top">' +
+          '<span class="lab-title">'+esc(l.title)+'</span>' +
+          '<span class="lab-date">'+esc(l.date)+'</span>' +
+        '</div>' +
+        '<div class="tag-row" style="margin-top:8px;">'+(l.tags||[]).map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join('')+'</div>' +
+        (l.problemStatement ? '<div class="lab-field"><h5>Problem statement</h5><p>'+esc(l.problemStatement)+'</p></div>' : '') +
+        (l.approach ? '<div class="lab-field"><h5>Approach</h5><p>'+esc(l.approach)+'</p></div>' : '') +
+        (l.tools && l.tools.length ? '<div class="lab-field"><h5>Tools used</h5><div class="tag-row">'+l.tools.map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join('')+'</div></div>' : '') +
+        (l.screenshots && l.screenshots.length ? '<div class="lab-field"><h5>Screenshots</h5><div class="lab-shots">'+l.screenshots.map(function(s){return '<img src="'+s+'">';}).join('')+'</div></div>' : '') +
+        (l.lessons ? '<div class="lab-field"><h5>Key lessons learned</h5><p>'+esc(l.lessons)+'</p></div>' : '') +
+        '<div class="lab-foot">' +
+          (l.link ? '<a class="project-link" href="'+esc(l.link)+'" target="_blank" rel="noopener">View completion →</a>' : '<span></span>') +
+        '</div>';
+      if (state.editMode){
+        var actions = document.createElement('div'); actions.className='lab-actions';
+        actions.appendChild(editBtn(function(){ editLab(i); }));
+        card.appendChild(actions);
+      }
+      v.appendChild(card);
+    });
+    root.appendChild(v);
+  }
+
+  function viewContacts(root){
+    var p = data.profile;
+    var v = document.createElement('div'); v.className = 'view';
+    var head = document.createElement('div'); head.className='view-header';
+    head.innerHTML = '<div class="kicker mono">REACH ME</div><h1>Contact</h1>';
+    v.appendChild(head);
+    var block = document.createElement('div'); block.className='section-block';
+    var rows = [
+      ['Email', p.email ? '<a href="mailto:'+esc(p.email)+'">'+esc(p.email)+'</a>' : ''],
+      ['Phone', p.phone ? esc(p.phone) : ''],
+      ['LinkedIn', p.linkedin ? '<a href="'+esc(p.linkedin)+'" target="_blank" rel="noopener">'+esc(p.linkedin.replace(/^https?:\/\//,''))+'</a>' : ''],
+      ['GitHub', p.github ? '<a href="'+esc(p.github)+'" target="_blank" rel="noopener">'+esc(p.github.replace(/^https?:\/\//,''))+'</a>' : ''],
+      ['Location', p.location ? esc(p.location) : '']
+    ].filter(function(r){ return r[1]; });
+    if (!rows.length){
+      block.innerHTML = '<div class="empty-state">No contact details added yet.</div>';
+    } else {
+      rows.forEach(function(r){
+        var row = document.createElement('div'); row.className='contact-row';
+        row.innerHTML = '<span class="contact-label">'+esc(r[0])+'</span><span class="contact-value">'+r[1]+'</span>';
+        block.appendChild(row);
+      });
+    }
+    v.appendChild(block);
+    if (state.editMode){
+      var eb = editBtn(editProfile, 'Edit contact info');
+      v.appendChild(eb);
+    }
+    root.appendChild(v);
+  }
+
+  function viewBlogList(root){
+    var v = document.createElement('div'); v.className = 'view';
+    var head = document.createElement('div'); head.className='view-header';
+    head.innerHTML = '<div class="kicker mono">LOG</div><h1>Blog</h1>';
+    v.appendChild(head);
+    if (state.editMode){
+      var addBtn = document.createElement('button'); addBtn.className='add-inline'; addBtn.textContent='+ New post';
+      addBtn.style.marginBottom='18px';
+      addBtn.addEventListener('click', function(){ editPost(null); });
+      v.appendChild(addBtn);
+    }
+    if (!data.blog.length){
+      var empty = document.createElement('div'); empty.className='empty-state'; empty.textContent='No posts yet.';
+      v.appendChild(empty);
+    }
+    data.blog.forEach(function(post, i){
+      var row = document.createElement('div'); row.className='post-row';
+      row.innerHTML =
+        '<div class="post-date mono">'+esc(post.date)+(post.tags&&post.tags.length?'  ·  '+post.tags.map(esc).join(', '):'')+'</div>' +
+        '<div class="post-title">'+esc(post.title)+'</div>' +
+        '<div class="post-excerpt">'+esc(excerpt(post.body,120))+'</div>';
+      row.addEventListener('click', function(){ state.view='post'; state.postIndex=i; renderApp(); window.scrollTo(0,0); });
+      if (state.editMode){
+        var actions = document.createElement('div'); actions.className='post-actions';
+        actions.appendChild(editBtn(function(){ editPost(i); }));
+        row.appendChild(actions);
+      }
+      v.appendChild(row);
+    });
+    root.appendChild(v);
+  }
+
+  function viewPost(root){
+    var post = data.blog[state.postIndex];
+    var v = document.createElement('div'); v.className = 'view post-full';
+    if (!post){ state.view='blog'; return viewBlogList(root); }
+    var back = document.createElement('button'); back.className='back-link'; back.textContent='← Back to blog';
+    back.addEventListener('click', function(){ state.view='blog'; state.postIndex=null; renderApp(); });
+    v.appendChild(back);
+    var head = document.createElement('div');
+    head.innerHTML =
+      '<h1>'+esc(post.title)+'</h1>' +
+      '<div class="post-date mono">'+esc(post.date)+(post.tags&&post.tags.length?'  ·  '+post.tags.map(esc).join(', '):'')+'</div>';
+    v.appendChild(head);
+    if (state.editMode){
+      var eb = editBtn(function(){ editPost(state.postIndex); }, 'Edit post');
+      eb.style.marginBottom = '18px';
+      v.appendChild(eb);
+    }
+    var body = document.createElement('div'); body.className='body'; body.innerHTML = nl2p(post.body);
+    v.appendChild(body);
+    root.appendChild(v);
+  }
+
+  /* ---------- App shell ---------- */
+  function renderApp(){
+    var app = document.getElementById('app');
+    app.innerHTML = '';
+
+    // Sidebar (desktop)
+    var sidebar = document.createElement('div'); sidebar.className='sidebar';
+    sidebar.innerHTML =
+      '<div class="brand">'+esc(data.profile.name || 'Your Name')+'</div>' +
+      '<div class="brand-sub">'+esc(data.profile.title||'')+'</div>';
+    var nav = document.createElement('nav'); nav.className='primary';
+    renderNavButtons(nav, false);
+    sidebar.appendChild(nav);
+    var foot = document.createElement('div'); foot.className='sidebar-foot';
+    if (data.profile.status){
+      var chip = document.createElement('div'); chip.className='status-chip';
+      chip.innerHTML = '<span class="pulse"></span>'+esc(data.profile.status);
+      foot.appendChild(chip);
+    }
+    if (state.canEdit){
+      var toggle = document.createElement('button');
+      toggle.className = 'edit-toggle' + (state.editMode?' on':'');
+      toggle.textContent = state.editMode ? '● Editing — click to stop' : 'Edit this site';
+      toggle.addEventListener('click', function(){ state.editMode = !state.editMode; renderApp(); });
+      foot.appendChild(toggle);
+    }
+    sidebar.appendChild(foot);
+    app.appendChild(sidebar);
+
+    // Topbar (mobile)
+    var topWrap = document.createElement('div'); topWrap.style.width='100%';
+    var topbar = document.createElement('div'); topbar.className='topbar';
+    topbar.innerHTML = '<div class="brand">'+esc(data.profile.name||'Your Name')+'</div>';
+    var topActions = document.createElement('div'); topActions.className='topbar-actions';
+    if (state.canEdit){
+      var toggle2 = document.createElement('button');
+      toggle2.className = 'edit-toggle' + (state.editMode?' on':'');
+      toggle2.textContent = state.editMode ? 'Editing' : 'Edit';
+      toggle2.addEventListener('click', function(){ state.editMode = !state.editMode; renderApp(); });
+      topActions.appendChild(toggle2);
+    }
+    topbar.appendChild(topActions);
+    topWrap.appendChild(topbar);
+    var topNav = document.createElement('div'); topNav.className='topbar-nav';
+    renderNavButtons(topNav, true);
+    topWrap.appendChild(topNav);
+
+    var main = document.createElement('main');
+    main.appendChild(topWrap);
+
+    if (state.view === 'home') viewHome(main);
+    else if (state.view === 'cv') viewCv(main);
+    else if (state.view === 'projects') viewProjects(main);
+    else if (state.view === 'labs') viewLabs(main);
+    else if (state.view === 'blog') viewBlogList(main);
+    else if (state.view === 'post') viewPost(main);
+    else if (state.view === 'contacts') viewContacts(main);
+    else viewHome(main);
+
+    app.appendChild(main);
+  }
+
+  document.title = (data.profile.name || 'Portfolio') + ' — Cybersecurity Portfolio';
+  renderApp();
+})();
+</script>
+
+
+</body></html>
